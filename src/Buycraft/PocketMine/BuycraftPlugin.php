@@ -13,6 +13,7 @@ use Buycraft\PocketMine\Execution\CategoryRefreshTask;
 use Buycraft\PocketMine\Util\InventoryUtils;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
+use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 
@@ -27,7 +28,6 @@ class BuycraftPlugin extends PluginBase
     private $deleteCommandsTask;
     private $serverInformation;
     private $allDue = array();
-    private $categoryRefreshTask = array();
     private $categories = array();
 
     /**
@@ -111,8 +111,10 @@ class BuycraftPlugin extends PluginBase
         $this->getScheduler()->scheduleRepeatingTask($this->commandExecutionTask, 1);
         $this->deleteCommandsTask = new DeleteCommandsTask($this->pluginApi);
         $this->getScheduler()->scheduleRepeatingTask($this->deleteCommandsTask, 20);
-        $this->categoryRefreshTask = new CategoryRefreshTask($this);
-        $this->getScheduler()->scheduleRepeatingTask($this->categoryRefreshTask, 20 * 60 * 3);
+        $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function(int $_):void{
+			$this->getLogger()->debug("Refreshing category list...");
+        	$this->getServer()->getAsyncPool()->submitTask(new CategoryRefreshTask($this));
+		}), 20 * 60 * 3);
         $this->getServer()->getAsyncPool()->submitTask(new DuePlayerCheck($this->pluginApi, true));
     }
 
