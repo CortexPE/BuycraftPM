@@ -11,11 +11,9 @@ use pocketmine\utils\TextFormat;
 class CategoryRefreshTask extends AsyncTask
 {
 	private $pluginApi;
-    private $plugin;
 
     public function __construct(BuycraftPlugin $plugin)
     {
-        $this->plugin = $plugin;
 		$this->pluginApi = $plugin->getPluginApi();
     }
 
@@ -30,12 +28,13 @@ class CategoryRefreshTask extends AsyncTask
 
     public function onCompletion(Server $server) {
     	$result = $this->getResult();
+    	$plugin = BuycraftPlugin::getInstance();
     	if($result !== null) {
-			$this->plugin->setCategories($result['categories']);
+			$plugin->setCategories($result['categories']);
 
-			$this->plugin->getLogger()->debug("Category refresh complete.");
+			$plugin->getLogger()->debug("Category refresh complete.");
 		} else {
-			$this->plugin->getLogger()->error(TextFormat::RED . "Unable to fetch category listing.");
+			$plugin->getLogger()->error(TextFormat::RED . "Unable to fetch category listing.");
 		}
 	}
 }
