@@ -77,12 +77,12 @@ class DuePlayerCheck extends AsyncTask
 
         // Test if the result is an exception, which indicates something went wrong
         if (!($result instanceof \Exception)) {
-            $plugin->getLogger()->info("Found " . count($result['all_due']) . " due player(s).");
+            $plugin->getLogger()->debug("Found " . count($result['all_due']) . " due player(s).");
             $plugin->setAllDue($result['all_due']);
 
             // See if we can execute some commands right now
             if ($result['execute_offline']) {
-                $plugin->getLogger()->info("Executing commands that can be run now...");
+                $plugin->getLogger()->debug("Executing commands that can be run now...");
                 $server->getAsyncPool()->submitTask(new ImmediateExecutionRunner($this->pluginApi));
             }
 
@@ -92,7 +92,7 @@ class DuePlayerCheck extends AsyncTask
             }), 0, self::MAXIMUM_ONLINE_PLAYERS_TO_PROCESS);
 
             if (count($canProcessNow) > 0) {
-                $plugin->getLogger()->info("Running commands for " . count($canProcessNow) . " online player(s)...");
+                $plugin->getLogger()->debug("Running commands for " . count($canProcessNow) . " online player(s)...");
 
                 $at = 1;
                 foreach ($canProcessNow as $due) {

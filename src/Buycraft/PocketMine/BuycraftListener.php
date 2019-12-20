@@ -35,7 +35,7 @@ class BuycraftListener implements Listener
             $duePlayer = $this->plugin->getDue($player);
             $this->plugin->removeDue($player);
 
-            $this->plugin->getLogger()->info("Executing login commands for " . $player->getName() . "[XUID: {$player->getXuid()}]...");
+            $this->plugin->getLogger()->debug("Executing login commands for " . $player->getName() . "[XUID: {$player->getXuid()}]...");
             Server::getInstance()->getAsyncPool()->submitTask(new PlayerCommandExecutor($this->plugin->getPluginApi(),
                 $duePlayer));
         }
