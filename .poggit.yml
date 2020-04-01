@@ -4,4 +4,6 @@ branches:
 projects:
   BuycraftPM:
     path: ""
+    lint:
+      phpstan: false
 ...
