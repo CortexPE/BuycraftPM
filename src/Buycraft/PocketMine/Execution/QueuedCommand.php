@@ -101,4 +101,8 @@ class QueuedCommand
 
         return $command;
     }
+    
+    public function needsOnline() : bool {
+        return $this->needOnline;
+    }
 }
