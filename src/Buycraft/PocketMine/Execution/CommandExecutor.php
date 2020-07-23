@@ -35,7 +35,7 @@ class CommandExecutor extends Task
 
             if ($command->canExecute()) {
                 // TODO: Capture command exceptions for our use.
-                if (Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), $command->getFinalCommand())) {
+                if (Server::getInstance()->dispatchCommand(new ConsoleCommandSender(), $command->getFinalCommand()) || !$command->needsOnline()) {
                     $successfully_executed[] = $command;
                 }
             }
